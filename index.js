@@ -1,13 +1,14 @@
 import express from 'express';
 import cors from 'cors';
 import pool from './config/db.config.js';
+import dotenv from 'dotenv';
+dotenv.config({path:'.env'})
+
 
 const app = express();
 
-
-
 app.use(cors(
-    {origin: 'http://localhost:3000'}
+    {origin: process.env.FRONTEND_URL}
 ));
 
 app.get('/ping',async (req,res)=>{
