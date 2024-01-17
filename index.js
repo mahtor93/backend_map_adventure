@@ -8,8 +8,12 @@ dotenv.config({
     path:'.env'
   });
 
+  const allowedOrigins = [
+    process.env.FRONTEND_DEV_URL,
+    process.env.FRONTEND_PROD_URL
+  ];
 app.use(cors(
-    {origin: process.env.FRONTEND_URL}
+    {origin: allowedOrigins}
 ));
 
 app.use('/', router);
