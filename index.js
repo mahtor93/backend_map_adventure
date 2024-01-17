@@ -10,21 +10,22 @@ dotenv.config({
 
 const allowedOrigins = [
     process.env.FRONTEND_DEV_URL,
-    process.env.FRONTEND_PROD_URL
+    'https://map-adventure.vercel.app'
   ];
 app.use(cors(
     {
-      origin: allowedOrigins,
+      origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+          callback(null, true);
+        } else {
+          callback(new Error('Not allowed by CORS'));
+        }
+      },
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     }
 ));
 
-app.use((req,res,next)=>{
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  next();
-});
+
 
 app.use('/', router);
 
