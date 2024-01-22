@@ -11,6 +11,19 @@ async function getAllMarkers(req, res){
     }
 }
 
+async function getZoneMarkers(req, res){
+    try{
+        const {id_group_mark}= req.params;
+        const result = await pool.query(`SELECT * FROM marks WHERE id_group_mark=$1`,[id_group_mark]);
+        console.log('Valor de id_group_mark:', id_group_mark);
+        console.log(id_group_mark);        
+        res.send({markers:result.rows});
+    }catch(error){
+        console.error('Error al obtener los datos de marcadores:',error);
+        res.status(500).send('Error al obtener los marcadores');
+    }
+}
+
 async function getAllGroupMarkers(req, res){
     try{
         const result = await pool.query('SELECT * FROM group_mark');
@@ -21,4 +34,4 @@ async function getAllGroupMarkers(req, res){
     }
 }
 
-export { getAllMarkers,getAllGroupMarkers };
+export { getAllMarkers,getAllGroupMarkers,getZoneMarkers };
