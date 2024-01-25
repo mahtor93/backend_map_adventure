@@ -34,4 +34,16 @@ async function getAllGroupMarkers(req, res){
     }
 }
 
-export { getAllMarkers,getAllGroupMarkers,getZoneMarkers };
+async function writeMarker(req,res){
+    try{
+        const {lat,lng,label,name_mark,id_group_mark} = req.body;
+        const result = await pool.query('INSERT INTO  marks (lat, lng, label, name_mark, id_group_mark) VALUES ($1,$2,$3,$4,$5) RETURNING*',[lat,lng,label,name_mark,id_group_mark])
+        res.status(201).json(result.rows[0]);
+    }catch(error){
+        console.error('Error al Ingresar datos:',error);
+        res.status(500).json({error:"Error interno del servidor"});
+    }
+};
+
+
+export { getAllMarkers,getAllGroupMarkers,getZoneMarkers,writeMarker };
